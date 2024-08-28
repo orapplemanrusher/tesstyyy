@@ -103,32 +103,48 @@
     </div>
 
     <script>
-        document.getElementById('showMessageButton').addEventListener('click', function() {
-            const messageBox = document.getElementById('messageBox');
-            messageBox.classList.toggle('visible');
+        const button = document.getElementById('showMessageButton');
+        let pressTimer;
 
-            // Change background color to pinkish
-            document.body.style.backgroundColor = '#ffb6c1'; // Light pink color
+        button.addEventListener('mousedown', () => {
+            pressTimer = setTimeout(() => {
+                // Long press detected
+                const messageBox = document.getElementById('messageBox');
+                messageBox.classList.add('visible');
 
-            // Create and animate heart elements
-            for (let i = 0; i < 10; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = `${Math.random() * 100}vw`;
-                heart.style.top = `${Math.random() * 100}vh`;
-                heart.style.animationDelay = `${Math.random() * 2}s`; // Stagger the animation
-                document.body.appendChild(heart);
-            }
+                // Change background color to pinkish
+                document.body.style.backgroundColor = '#ffb6c1'; // Light pink color
 
-            // Remove the button after it is clicked
-            this.remove();
+                // Create and animate heart elements
+                for (let i = 0; i < 10; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.style.left = `${Math.random() * 100}vw`;
+                    heart.style.top = `${Math.random() * 100}vh`;
+                    heart.style.animationDelay = `${Math.random() * 2}s`; // Stagger the animation
+                    document.body.appendChild(heart);
+                }
 
-            // Reset the page after 5 seconds
-            setTimeout(() => {
-                // Remove all hearts before reloading
-                document.querySelectorAll('.heart').forEach(heart => heart.remove());
-                location.reload(); // Reload the page to reset all changes
-            }, 5000); // 5000 milliseconds = 5 seconds
+                // Remove the button after it is clicked
+                button.remove();
+
+                // Reset the page after 5 seconds
+                setTimeout(() => {
+                    // Remove all hearts before reloading
+                    document.querySelectorAll('.heart').forEach(heart => heart.remove());
+                    location.reload(); // Reload the page to reset all changes
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }, 1000); // 1000 milliseconds = 1 second
+        });
+
+        button.addEventListener('mouseup', () => {
+            clearTimeout(pressTimer);
+            document.body.innerHTML = '<div id="messageBox">LOL</div>';
+            document.getElementById('messageBox').style.display = 'block';
+        });
+
+        button.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
         });
     </script>
 </body>
