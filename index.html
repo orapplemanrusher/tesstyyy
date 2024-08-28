@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Button Message with Hearts</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Default background color */
+            background-size: cover;
+            background-position: center;
+            transition: background-color 1s ease;
+            overflow: hidden; /* Ensure hearts don't overflow the viewport */
+        }
+        .button-container {
+            text-align: center;
+            position: relative; /* Ensure hearts are positioned relative to the container */
+        }
+        #showMessageButton {
+            padding: 15px 30px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        #showMessageButton:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        #messageBox {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.8);
+            animation: fadeIn 1s ease;
+        }
+        #messageBox.visible {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            transform: rotate(-45deg);
+            opacity: 0;
+            animation: heartBeat 2s forwards; /* Extended animation duration */
+        }
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -15px;
+            left: 0;
+        }
+        .heart::after {
+            left: 15px;
+            top: 0;
+        }
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+                opacity: 1; /* Start fully visible */
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1; /* End fully visible */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button id="showMessageButton">Press me</button>
+        <div id="messageBox">
+            Love you Pabitra Waiba
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('showMessageButton').addEventListener('click', function() {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.classList.toggle('visible');
+
+            // Change background color to pinkish
+            document.body.style.backgroundColor = '#ffb6c1'; // Light pink color
+
+            // Create and animate heart elements
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.top = `${Math.random() * 100}vh`;
+                heart.style.animationDelay = `${Math.random() * 2}s`; // Stagger the animation
+                document.body.appendChild(heart);
+            }
+
+            // Remove the button after it is clicked
+            this.remove();
+
+            // Reset the page after 5 seconds
+            setTimeout(() => {
+                // Remove all hearts before reloading
+                document.querySelectorAll('.heart').forEach(heart => heart.remove());
+                location.reload(); // Reload the page to reset all changes
+            }, 5000); // 5000 milliseconds = 5 seconds
+        });
+    </script>
+</body>
+</html>
